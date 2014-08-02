@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Temple Bell</title>
+		<link rel="stylesheet" href="/styles/TempleBell.css" type="text/css" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#promptForm").submit(function(event) {
+					var mins = document.forms[0]["numberOfMinutes"].value;
+					console.log("Starting prompting for " + mins + " minutes");
+					var promptTimerID = setInterval(function() {
+						var bellSound = new Audio("sounds/Bell.m4a");
+						bellSound.play();
+					}, mins * 60 * 1000);
+				
+					event.preventDefault();
+					return false;
+				});
+			});
+			
+			/* Next up:
+
+				- set font
+				- center in page
+				- have some indicator that promping has started
+			*/
+		</script>	
+	</head>
+	
+	<body>
+		<div>
+			<form id="promptForm"> 
+				Prompt me every <input type="number" name="numberOfMinutes" min="1" max="1440" autofocus required> minutes.
+				<input type="submit" value="Start">
+			</form>
+		</div>
+	</body>
+</html>

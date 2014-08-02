@@ -1,0 +1,493 @@
+<html>
+<head>
+  <title>Pathfinder Utilities</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <base href="http://cemschemel.com/" />
+  <link rel="stylesheet" href="styles/PathfinderStyle.css" type="text/css" />
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript">
+
+  var charactersInCombat = new Array();
+  
+  window.onload = function() {
+    addCharacter();
+    
+    /*
+    rollResultFromString("d6");
+    rollResultFromString("-3d6");
+    rollResultFromString("0d6");
+    rollResultFromString("1d6");
+    rollResultFromString("5d6");
+    rollResultFromString("+5d6");
+    
+    
+    rollResultFromString("d");
+    rollResultFromString("d-3");
+    rollResultFromString("d0");
+    rollResultFromString("d1");
+    rollResultFromString("d5");
+    rollResultFromString("d+5");
+    
+    rollResultFromString("d6");
+    rollResultFromString("d6-3");
+    rollResultFromString("d6-1");
+    rollResultFromString("d6-0");
+    rollResultFromString("d6+0");
+    rollResultFromString("d6+1");
+    rollResultFromString("d6+3");
+
+    
+    //some invalid cases
+    rollResultFromString("");
+    rollResultFromString("d");
+    rollResultFromString("3d+4");
+    rollResultFromString("d-4");
+    rollResultFromString("4d");
+    rollResultFromString("d-4+5");
+    rollResultFromString("adr4");
+    
+    rollResultFromString();
+    rollResultFromString(null);
+    rollResultFromString(5);
+   
+    
+    rollResultFromString(" d6");
+    rollResultFromString("d6 ");
+    rollResultFromString("3 d 6");
+    rollResultFromString("3 d 6 + 25");
+    */
+   
+  }
+        
+  //****************************************************************************************
+  //Methods to accomodate the representations and rolling of dice
+  //****************************************************************************************
+  function boundedRand(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  
+  function rollResultFromParameters(numberOfDice, diceType, bonus) {
+    /* make the params integers, even if they may not be. This allows us to handle string
+    arguments that are otherwise OK, like "2", "-5", etc. */
+    
+    numberOfDice = parseInt(numberOfDice);
+    diceType = parseInt(diceType);
+    bonus = parseInt(bonus);
+    
+    //see if any of them don't survive this transformation
+    if(isNaN(numberOfDice) || isNaN(diceType) || isNaN(bonus))
+    {
+      alert("Can't make requested roll. Either the number of dice, dice type or the roll bonus are not numbers.");
+      return 0;
+    }
+    
+    //impose some sanity on the rolls
+    if(numberOfDice > 100 || numberOfDice < 1)
+    {
+      alert("Can't roll " + numberOfDice + " dice. Number of dice must be between 1 and 100 (inclusive).");
+      return 0;
+    }
+    
+    if(diceType > 100 || diceType < 2)
+    {
+      alert("Can't roll d" + diceType + " dice. Dice type must be between 2 and 100 (inclusive).");
+      return 0;
+    }
+    
+    //if all is good, actually calculate the result
+    var result = 0;
+    for(var i = 0; i < numberOfDice; ++i)
+    {
+      result += boundedRand(1, diceType);
+    }
+    result += bonus;
+    return result;
+  }
+  
+  function rollResultFromString(rollString) {
+    if(null == rollString || "string" != typeof rollString || 0 == rollString.length)
+    {
+      alert("Can't make requested roll. The string to roll with is either null, empty, or not actually a string.");
+      return 0;
+    }
+    
+    var rollPatternRegex = /([+-]?\d*)d(\d+)([+-]?\d*)/;
+    var patternMatches = rollPatternRegex.exec(rollString);
+    
+    if(null == patternMatches || 4 != patternMatches.length)
+    {
+      alert("Can't make requested roll. \"" + rollString + "\" doesn't make sense as a Pathfinder roll.");
+      return 0;
+    }
+    
+    if(0 == patternMatches[1].length)
+    {
+      patternMatches[1] = "1";  //if the first match is empty it implies 1 dice being rolled
+    }
+    
+    for(var i = 2; i < patternMatches.length; ++i)
+    {
+      if(0 == patternMatches[i].length)  //if a match is empty, it implies 0 dice type or bonus
+      {
+        patternMatches[i] = "0";
+      }
+    }
+
+    return rollResultFromParameters(patternMatches[1], patternMatches[2], patternMatches[3]);
+  }
+  
+  function rollStringFromParameters(numberOfDice, diceType, bonus) {
+    var resultString = "";
+    
+    if(numberOfDice > 1)
+    {
+      resultString += numberOfDice.toString();
+    }
+    
+    resultString += "d" + diceType.toString();
+    
+    if(bonus != 0)
+    {
+      if(bonus > 0)
+      {
+        resultString += "+";
+      }
+      resultString += bonus;
+    }
+    
+    return resultString;
+  }
+  
+  //****************************************************************************************
+  //Character constructor and methods
+  //****************************************************************************************
+  function Character(name, initiative, hitPoints) {
+    this.Name = name;
+    this.Initiative = initiative;
+    this.HitPoints = hitPoints;
+   
+    this.setName = setName;
+    this.setInitiative = setInitiative;
+    this.setHitPoints = setHitPoints;
+    this.adjustHitPoints = adjustHitPoints;
+    this.isDead = isDead;
+  }
+  
+  function setName(newName) {
+    //don't allow an empty name
+    if(0 == newName.length)
+    {
+      alert("Can't set an empty name for a character");
+    }
+    else
+    {
+      this.Name = newName;
+    }
+  }
+  
+  function setInitiative(newInitiative) {
+    this.Initiative = newInitiative;
+  }
+  
+  function setHitPoints(newHitPoints) {
+    this.HitPoints = newHitPoints;
+    
+    if(this.HitPoints < 0)
+    {
+      this.HitPoints = 0;
+    }
+  }
+  
+  function adjustHitPoints(hitPointAdjustment) {
+    this.HitPoints += hitPointAdjustment;
+    
+    if(this.HitPoints < 0)
+    {
+      this.HitPoints = 0;
+    }
+
+  }
+  
+  function isDead() {
+    return (0 == this.HitPoints);
+  }
+    
+  function characterSortFunc(a, b) {
+    return b.Initiative - a.Initiative;
+  }
+  
+  //****************************************************************************************
+  //Some helper functions
+  //****************************************************************************************
+  //Updates the given row of the combat table with the info of the corresponding character in the global array
+  function updateRowInCombatTable(rowIndex) {
+    if(0 == rowIndex)
+    {
+      alert("Trying to update the header row!");
+      return;
+    }
+    
+    var combatTable = document.getElementById("combatTable");
+    if(rowIndex >= combatTable.rows.length)
+    {
+      alert("Trying to update row index " + rowIndex + " but the combat table only has " + combatTable.rows.length + " rows!");
+    }
+    
+    var characterIndex = rowIndex - 1; //take care of the offset once
+    
+    if(characterIndex > charactersInCombat.length)
+    {
+      alert("Trying to update info for char index " + characterIndex + " but there are only " + charactersInCombat.length + " chars!");
+    }
+    
+    //actually update values
+    var currentRow = combatTable.rows[rowIndex];
+    var currentCharacter = charactersInCombat[characterIndex];
+    
+    //initiative is the value of the only child (the text field) in cell 1
+    currentRow.cells[1].firstChild.value = currentCharacter.Initiative;
+    
+    //name is the value of the only child (the text field) in cell 2
+    currentRow.cells[2].firstChild.value = currentCharacter.Name;
+    
+    //hitpoints are the value of the 2nd child in cell 3
+    currentRow.cells[3].childNodes[2].value = currentCharacter.HitPoints;
+    
+    //somehow convey that character is dead, currently accomplished by just changing background color
+    if(currentCharacter.isDead())
+    {
+      currentRow.style.backgroundColor = "Gray";
+    }
+    else
+    {
+      currentRow.style.backgroundColor = "White";
+    }
+  }
+  
+  function updateCombatTable() {
+    //equate the size of the global array and table rows, taking into account the offset because of table headers
+    var combatTable = document.getElementById("combatTable");
+    while(combatTable.rows.length - 1 != charactersInCombat.length)
+    {
+      if(combatTable.rows.length - 1 > charactersInCombat.length) //the table has too many rows
+      {
+        combatTable.deleteRow(-1);  //delete the last row
+      }
+      else //the table has too few rows
+      {
+        var newRow = combatTable.insertRow(-1);  //add one row to the end
+        
+        //populate that row with the proper elements
+        newRow.insertCell(0);  //The first cell is the place for the current player marker, no other fiddling needed
+        
+        var characterInitiativeCell = newRow.insertCell(1);  //The next cell is for the player initiative
+        var newButton = document.createElement("input");
+        newButton.setAttribute("type", "text");
+        newButton.setAttribute("onblur", "setCharacterInitiative(event)");
+        newButton.setAttribute("size", "1");
+        newButton.setAttribute("value", "99");
+        characterInitiativeCell.appendChild(newButton);
+        
+        var characterNameCell = newRow.insertCell(2);  //Next cell is for the player name
+        newButton = document.createElement("input");
+        newButton.setAttribute("type", "text");
+        newButton.setAttribute("onblur", "setCharacterName(event)");
+        newButton.setAttribute("size", "15");
+        newButton.setAttribute("value", "XXXXXX");
+        characterNameCell.appendChild(newButton);
+        
+        var characterHitPointCell = newRow.insertCell(3);  //Next cell is for all the hitpoint buttons
+        newButton = document.createElement("input");
+        newButton.setAttribute("type", "button");
+        newButton.setAttribute("onclick", "adjustCharacterHitPoints(event, -5)");
+        newButton.setAttribute("value", "-5");
+        characterHitPointCell.appendChild(newButton);
+        
+        newButton = document.createElement("input");
+        newButton.setAttribute("type", "button");
+        newButton.setAttribute("onclick", "adjustCharacterHitPoints(event, -1)");
+        newButton.setAttribute("value", "-1");
+        characterHitPointCell.appendChild(newButton);
+        
+        newButton = document.createElement("input");
+        newButton.setAttribute("type", "text");
+        newButton.setAttribute("onblur", "setCharacterHitPoints(event)");
+        newButton.setAttribute("size", "1");
+        newButton.setAttribute("value", "99");
+        characterHitPointCell.appendChild(newButton);
+        
+        newButton = document.createElement("input");
+        newButton.setAttribute("type", "button");
+        newButton.setAttribute("onclick", "adjustCharacterHitPoints(event, +1)");
+        newButton.setAttribute("value", "+1");
+        characterHitPointCell.appendChild(newButton);
+        
+        newButton = document.createElement("input");
+        newButton.setAttribute("type", "button");
+        newButton.setAttribute("onclick", "adjustCharacterHitPoints(event, +5)");
+        newButton.setAttribute("value", "+5");
+        characterHitPointCell.appendChild(newButton);
+
+        
+        var characterDelButtonCell = newRow.insertCell(4);  //Finally, the delete button cell
+        newButton = document.createElement("input");
+        newButton.setAttribute("type", "button");
+        newButton.setAttribute("onclick", "removeCharacter(event)");
+        newButton.setAttribute("value", "Del");
+        characterDelButtonCell.appendChild(newButton);
+      }
+    }
+    
+    //now make sure that all the rows represent the characters faithfully
+    for(var i = 0; i < charactersInCombat.length; ++i)
+    {
+      updateRowInCombatTable(i+1); //remember the table has the header row
+    }
+  }
+  
+  function placeNextCharButtonInTableRow(rowIndex)
+  {
+    var nextCharButton = document.getElementById("nextCharButton");
+    
+    if(null == nextCharButton) //if this is the first time it's being placed, we must create the button
+    {
+      nextCharButton = document.createElement("input");
+      nextCharButton.setAttribute("type", "button");
+      nextCharButton.setAttribute("onclick", "advanceTurn(event)");
+      nextCharButton.setAttribute("value", "Advance Turn");                            
+      nextCharButton.setAttribute("id", "nextCharButton");
+    }
+    else //if the button already exists, it must be removed from its current place
+    {
+      nextCharButton.parentNode.parentNode.style.backgroundColor = "White";  //make background regular again
+      nextCharButton.parentNode.removeChild(nextCharButton);
+    }
+    
+    //now place the button in the given row
+    var combatTable = document.getElementById("combatTable");
+    combatTable.rows[rowIndex].cells[0].appendChild(nextCharButton);
+    combatTable.rows[rowIndex].style.backgroundColor = "LimeGreen";  //indicating current player with green background
+  }
+  
+  //****************************************************************************************
+  //Actions user takes from the UI
+  //****************************************************************************************
+  function setCharacterName(event) {
+    var rowIndex = event.target.parentNode.parentNode.rowIndex;
+    var newName = event.target.value;
+    charactersInCombat[rowIndex-1].setName(newName);
+    
+    updateRowInCombatTable(rowIndex);
+  }
+  
+  function setCharacterInitiative(event) {
+    var rowIndex = event.target.parentNode.parentNode.rowIndex;
+    var newInitiative = event.target.value;
+    charactersInCombat[rowIndex-1].setInitiative(newInitiative);
+    
+    updateRowInCombatTable(rowIndex);
+  }
+  
+  function setCharacterHitPoints(event) {
+    var rowIndex = event.target.parentNode.parentNode.rowIndex;
+    var newHitPoints = event.target.value;
+    charactersInCombat[rowIndex-1].setHitPoints(newHitPoints);
+    
+    updateRowInCombatTable(rowIndex);
+  }
+  
+  function adjustCharacterHitPoints(event, hitPointAdjustment) {
+    var rowIndex = event.target.parentNode.parentNode.rowIndex;
+    charactersInCombat[rowIndex-1].adjustHitPoints(hitPointAdjustment);
+
+    updateRowInCombatTable(rowIndex);
+  }
+  
+  function addCharacter() {
+    //add a default character to the end of the global array
+    charactersInCombat.push(new Character("New Character", 10, 15));
+    
+    updateCombatTable();
+  }
+  
+  function removeCharacter(event) {
+    //delete given character from the global array
+    var rowIndexToDelete = event.target.parentNode.parentNode.rowIndex;
+    
+    //remember that the row index is always 1 more than the corresponding global array index because of the header row
+    var charRemoved = charactersInCombat.splice(rowIndexToDelete-1, 1);
+    
+    //the return value of splice is an array with the removed elements, in this case only 1 entry
+    //alert("Removing player named " + charRemoved[0].Name);
+        
+    updateCombatTable();
+  }
+  
+  function advanceTurn(event) {
+    //advance the current player marker to the next not-dead character
+    var rowIndex = event.target.parentNode.parentNode.rowIndex;
+    var combatTable = document.getElementById("combatTable");
+    
+    do
+    {
+      rowIndex += 1;
+      
+      //take care of wrap around. This is where we'd toggle round transitions
+      //TODO: this will blow if everyone is dead!!!
+      if(rowIndex >= combatTable.rows.length) 
+      {
+        rowIndex = 1;
+      }
+    }
+    while(charactersInCombat[rowIndex-1].isDead());
+        
+    placeNextCharButtonInTableRow(rowIndex);
+  }
+  
+  function startCombat(event) {
+    //sort the global array
+    charactersInCombat.sort(characterSortFunc);
+    
+    updateCombatTable();
+    
+    //drop in the first player marker/button
+    placeNextCharButtonInTableRow(1);
+  }
+  
+  function rollDice() {
+    var numberOfDice = document.getElementById("numberOfDice").value;
+    var diceType = document.getElementById("diceType").value;
+    var rollBonus = document.getElementById("rollBonus").value;
+    
+    document.getElementById("rollResult").innerHTML = rollResultFromParameters(numberOfDice, diceType, rollBonus);
+  }
+  
+</script>
+</head>
+
+  <body bgcolor="#FFFFFF" text="#000000">
+
+    <input type="text" id="numberOfDice" size="1" value="1"/>
+    <label>d</label>
+    <input type="text" id="diceType" size="1" value="20" />
+    <label>+</label>
+    <input type="text" id="rollBonus" size="1" value="0" />
+    <label>=</label>
+    <label id="rollResult">Result here</label>
+    <br/>
+    <input type="button" onclick="rollDice()" value="Roll dice!" />
+    <br/>
+    <br/>
+    
+    <input type="button" onclick="startCombat()" value="Start Combat!" />
+    <input type="button" onclick="addCharacter()" value="New Character" />
+
+    <table border="1" id="combatTable">
+      <tr><th>Current turn</th><th>Init</th><th>Name</th><th>Hit points</th></tr>
+      
+      <!-- the rest of this table is created programmatically -->
+    </table>
+    
+</body>
+</html>
