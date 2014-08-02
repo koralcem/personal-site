@@ -5,7 +5,6 @@
 <meta charset="utf-8" />
 <title>Cem Schemel</title>
 <meta name="description" content="Cem Schemel" />
-<base href="http://cemschemel.com/" />
 </head>
 
 <body>
