@@ -18,9 +18,16 @@
 			document.body.appendChild( renderer.domElement );
 
 			var geometry = new THREE.CylinderGeometry(1, 1, 2, 20);
-			var material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+			var material = new THREE.MeshPhongMaterial( { color: 0x0000ff } );
 			var cube = new THREE.Mesh( geometry, material );
 			scene.add( cube );
+			
+			var light = new THREE.PointLight( 0xffffff, 100, 0 );
+			light.position.set( 5, 5, 5 );
+			scene.add( light );
+			
+			var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+			scene.add( light );
 
 			camera.position.z = 5;
 		
