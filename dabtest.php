@@ -35,10 +35,16 @@ while($row = mysqli_fetch_array($result))
   echo "<br>";
 }
 
-
-
-
 mysqli_close($connection);
+
+if (strpos($_SERVER[REQUEST_URI], '/bab') === false) {
+	echo 'NOT in URI';
+} else {
+	echo 'In URL';
+}
+
+//echo $_SERVER[HTTP_HOST];
+//echo $_SERVER[REQUEST_URI];
 
 ?>
 
