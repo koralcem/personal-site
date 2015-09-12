@@ -76,8 +76,11 @@ WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cemschemel_portfolio',
+        'USER': 'portfolio_dbuser',
+        'PASSWORD': 'GetMe@Job2015',
+        'HOST': 'mysql.cemschemel.com',
     }
 }
 
@@ -100,3 +103,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.dirname(BASE_DIR) + '/public/static/'
