@@ -14,8 +14,12 @@
           }
           else {
             setInterval(function () {
+              var now = new Date();
+              console.log("Triggering a notification at " + now.toLocaleTimeString());
               var notification = new Notification("Sip some water");
-            }, 15 * 60 * 1000);
+              now.setMinutes(now.getMinutes() + 1);
+              console.log("Another one should trigger at " + now.toLocaleTimeString());
+            }, 1 * 60 * 1000);
           }
         });
       }
