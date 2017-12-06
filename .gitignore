@@ -1,11 +1,5 @@
 .DS_Store
-env/
 
-# Byte-compiled / optimized / DLL files for python
-__pycache__/
-*.py[cod]
-
-# PyCharm
-**/.idea
-**/.idea/workspace.xml
-**/.idea/task.xml
+# Jekyll
+_site/
+.jekyll-metadata
