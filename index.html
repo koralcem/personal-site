@@ -1,2 +1,13 @@
+---
+videos:
+  "title1: more" : "value1 more"
+  "Nedret oztan evde" : "some/url/dool"
+---
 <h1>Hello world</h1>
+{% include navigation.html %}
+<ul>
+  {% for video in page.videos %}
+  <li>{{ video[0] }} --- {{ video[1] }}</li>
+  {% endfor %}
+</ul>
 <p>added this</p>
