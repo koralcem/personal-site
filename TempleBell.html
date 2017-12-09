@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Notifications</title>		
+    <script type="text/javascript">
+      window.onload = function() {
+        Notification.requestPermission().then(function(result) {
+          if (result === "denied") {
+            console.log("Permission denied :(");
+          }
+          else if (result === "default") {
+            console.log("Request ignored...");
+          }
+          else {
+            setInterval(function () {
+              var now = new Date();
+              console.log("Triggering a notification at " + now.toLocaleTimeString());
+              var notification = new Notification("Sip some water");
+              now.setMinutes(now.getMinutes() + 1);
+              console.log("Another one should trigger at " + now.toLocaleTimeString());
+            }, 1 * 60 * 1000);
+          }
+        });
+      }
+		</script>	
+	</head>
+	
+	<body>
+		<p>You'll get prompted to drink some water every 15 mins.</p>
+	</body>
+</html>
