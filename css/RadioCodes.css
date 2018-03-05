@@ -1,0 +1,10 @@
+input {
+  margin: auto;
+  display: block;
+  width: 50%;
+}
+
+div#prompt {
+  margin: auto;
+  width: 50%;
+}
