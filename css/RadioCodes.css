@@ -8,3 +8,8 @@ div#prompt {
   margin: auto;
   width: 50%;
 }
+
+div#spelling {
+  display: flex;
+  justify-content: space-around;
+}

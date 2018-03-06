@@ -34,8 +34,7 @@ $(document).ready(function() {
       ";" : "Semicolon",
       ":" : "Colon",
       "\\": "Backslash",
-      "-" : "Dash",
-      " " : "Say \"Space\" or \"Next word\""
+      "-" : "Dash"
     }
 
     let codeWord = radioCodes[letter]
@@ -44,12 +43,15 @@ $(document).ready(function() {
 
   $("input").on("input propertychange paste", function() {
     let spellingDiv = $("div#spelling").empty()
-    spellingDiv.empty()
-    let text = $(this).val()
+    let words = $(this).val().trim().split(" ")
 
-    for (i=0; i < text.length; i++) {
-      let letter = text.charAt(i).toUpperCase()
-      spellingDiv.append(elementForLetter(letter))
-    }
+    words.forEach(function(word) {
+      let wordDiv = $("<div></div").addClass("word")
+      for (i = 0; i < word.length; i++) {
+        let letter = word.charAt(i).toUpperCase()
+        wordDiv.append(elementForLetter(letter))
+      }
+      spellingDiv.append(wordDiv)
+    })
   })
 })
