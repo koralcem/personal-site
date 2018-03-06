@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  function codeWordForLetter(letter) {
+  function elementForLetter(letter) {
     let radioCodes = {
       "A" : "Alfa",
       "B" : "Bravo",
@@ -27,10 +27,19 @@ $(document).ready(function() {
       "X" : "Xray",
       "Y" : "Yankee",
       "Z" : "Zulu",
+      "," : "Comma",
+      "." : "Period",
+      "/" : "Slash",
+      "?" : "Question mark",
+      ";" : "Semicolon",
+      ":" : "Colon",
+      "\\": "Backslash",
+      "-" : "Dash",
       " " : "Say \"Space\" or \"Next word\""
     }
 
-    return radioCodes[letter]
+    let codeWord = radioCodes[letter]
+    return "<p>" + letter + (codeWord == undefined ? "" : " - " + codeWord) + "</p>"
   }
 
   $("input").on("input propertychange paste", function() {
@@ -40,7 +49,7 @@ $(document).ready(function() {
 
     for (i=0; i < text.length; i++) {
       let letter = text.charAt(i).toUpperCase()
-      spellingDiv.append("<p>" + letter + " - " + codeWordForLetter(letter) + "</p>")
+      spellingDiv.append(elementForLetter(letter))
     }
   })
 })
