@@ -5,21 +5,21 @@
   <style type="text/css">
     body{
       text-align: center;
-      background-image: url("images/tardiscorner.jpg");
+      background-image: url("media/tardiscorner.jpg");
       background-repeat: no-repeat;
       background-position: right bottom;
       background-color: #1E2E51;
       font-family: sans-serif;
       font-weight: 100;
     }
-    
+
     h1{
       color: white;
       font-weight: 100;
       font-size: 40px;
       margin: 40px 0px 20px;
     }
-    
+
     #clockdiv{
         font-family: sans-serif;
         color: #fff;
@@ -28,31 +28,31 @@
         text-align: center;
         font-size: 30px;
     }
-    
+
     #clockdiv > div{
         padding: 10px;
         border-radius: 3px;
         background: #3c5da3;
         display: inline-block;
     }
-    
+
     #clockdiv div > span{
         padding: 15px;
         border-radius: 3px;
         background: #5889f3;
         display: inline-block;
     }
-    
+
     .smalltext{
         padding-top: 5px;
         font-size: 16px;
     }
   </style>
-  
+
   <script type="text/javascript">
     window.onload = function() {
       var deadline = 'Sep 30, 2017, 09:00:00'
-      
+
       function getTimeRemaining(endtime) {
         var t = Date.parse(endtime) - Date.parse(new Date());
         var seconds = Math.floor( (t/1000) % 60 );
@@ -67,35 +67,35 @@
           'seconds': seconds
         };
       }
-      
+
       function initializeClock(id, endtime) {
         var clock = document.getElementById(id);
         var daysSpan = clock.querySelector('.days');
         var hoursSpan = clock.querySelector('.hours');
         var minutesSpan = clock.querySelector('.minutes');
         var secondsSpan = clock.querySelector('.seconds');
-        
+
         function updateClock() {
           var t = getTimeRemaining(endtime);
           daysSpan.innerHTML = t.days;
           hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
           minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
           secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-          
+
           if(t.total<=0){
             clearInterval(timeinterval);
           }
         }
-      
+
         updateClock(); // run function once at first to avoid delay
-        var timeinterval = setInterval(updateClock,1000);      
+        var timeinterval = setInterval(updateClock,1000);
       }
-      
+
       initializeClock('clockdiv', deadline);
     }
-  
+
   </script>
-  
+
 </head>
 <body>
   <h1>Papers signed in ...</h1>
@@ -118,6 +118,6 @@
     </div>
   </div>
   <h1>If I had a TARDIS, we'd already be there</h1>
-  
+
 </body>
 </html>
