@@ -46,7 +46,7 @@ $(document).ready(function() {
     let words = $(this).val().trim().split(" ")
 
     words.forEach(function(word) {
-      let wordDiv = $("<div></div").addClass("word")
+      let wordDiv = $("<div></div>").addClass("word")
       for (i = 0; i < word.length; i++) {
         let letter = word.charAt(i).toUpperCase()
         wordDiv.append(elementForLetter(letter))

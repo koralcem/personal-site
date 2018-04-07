@@ -11,5 +11,10 @@ div#prompt {
 
 div#spelling {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+div.word {
+  margin: 0px 20px;
 }
