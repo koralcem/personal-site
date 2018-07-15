@@ -9,12 +9,32 @@ class RoomTile {
 }
 
 class RoomTable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      rooms: this.props.rooms
+    }
+  }
+
+  handleClick(roomName) {
+    let rooms = this.state.rooms.slice()
+    rooms.find( room => room.name === roomName ).count -= 1
+    rooms = rooms.filter( room => room.count > 0 )
+    this.setState({rooms: rooms})
+  }
+
   render() {
     return (
       <table>
         <tbody>
-          {this.props.rooms.map((room) =>
-            <RoomRow key={room.name} name={room.name} remaining={room.count} type={room.type}/>
+          {this.state.rooms.map((room) =>
+            <RoomRow
+              key={room.name}
+              name={room.name}
+              remaining={room.count}
+              type={room.type}
+              onClick={() => this.handleClick(room.name) }
+            />
           )}
         </tbody>
       </table>
@@ -25,7 +45,7 @@ class RoomTable extends React.Component {
 class RoomRow extends React.Component {
   render() {
     return (
-      <tr className={this.props.type}>
+      <tr className={this.props.type} onClick={() => this.props.onClick()}>
         <td>{this.props.name}</td>
         <td>{this.props.remaining}</td>
       </tr>
