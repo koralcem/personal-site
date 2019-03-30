@@ -37,7 +37,6 @@ class RoomTable extends React.Component {
               name={room.name}
               remaining={room.count}
               type={room.type}
-              remainingPercent={room.count / totalRoomCount}
               onClick={() => this.handleClick(room.name) }
             />
           )}
@@ -53,7 +52,6 @@ class RoomRow extends React.Component {
       <tr className={this.props.type} onClick={() => this.props.onClick()}>
         <td>{this.props.name}</td>
         <td>{this.props.remaining}</td>
-        <td>{`${Math.floor(this.props.remainingPercent * 100)}%`}</td>
       </tr>
     )
   }
