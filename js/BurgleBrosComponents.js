@@ -110,6 +110,10 @@ class BurgleColumn extends HTMLElement {
 
     const styleNode = document.createElement('style')
     styleNode.textContent = `
+    :host {
+      width: 50%;
+    }
+
     .column {
       display: flex column;
     }
@@ -181,9 +185,14 @@ class BurgleCard extends HTMLElement {
 
     const styleNode = document.createElement('style')
     styleNode.textContent = `
+    :host {
+      display: flex;
+      justify-content: center;
+    }
     .card {
       display: flex;
       justify-content: center;
+      width: 450px;
     }
     `
     shadow.appendChild(styleNode)
