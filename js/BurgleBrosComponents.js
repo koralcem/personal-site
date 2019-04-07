@@ -16,48 +16,42 @@ const decrementRoomCount = function (mouseEvent) {
   }
 }
 
-class BurgleTable extends HTMLElement {
+class BurgleRooms extends HTMLElement {
   constructor() {
     super()
 
     const shadow = this.attachShadow({ mode: 'open' })
 
-    const tableColumns = [
-      [
-        new RoomTile('Safe', 3, 'safe'),
-        new RoomTile('Stairs', 3, 'stair'),
-        new RoomTile('Walkway', 3, 'beneficial'),
-        new RoomTile('Laboratory', 2, 'beneficial'),
-        new RoomTile('Lavatory', 1, 'beneficial'),
-        new RoomTile('Service Duct', 2, 'special-movement'),
-        new RoomTile('Secret Door', 2, 'special-movement'),
-        new RoomTile('Computer', 3, 'computer'),
-        new RoomTile('Camera', 4, 'alarm'),
-      ],
-      [
-        new RoomTile('Laser', 3, 'alarm'),
-        new RoomTile('Motion', 3, 'alarm'),
-        new RoomTile('Detector', 3, 'alarm'),
-        new RoomTile('Fingerprint', 3, 'alarm'),
-        new RoomTile('Thermo', 3, 'alarm'),
-        new RoomTile('Keypad', 3, 'impediment'),
-        new RoomTile('Deadbolt', 3, 'impediment'),
-        new RoomTile('Foyer', 2, 'open-area'),
-        new RoomTile('Atrium', 2, 'open-area'),
-      ]
+    const rooms = [
+      new RoomTile('Safe', 3, 'safe'),
+      new RoomTile('Stairs', 3, 'stair'),
+      new RoomTile('Walkway', 3, 'beneficial'),
+      new RoomTile('Laboratory', 2, 'beneficial'),
+      new RoomTile('Lavatory', 1, 'beneficial'),
+      new RoomTile('Service Duct', 2, 'special-movement'),
+      new RoomTile('Secret Door', 2, 'special-movement'),
+      new RoomTile('Computer', 3, 'computer'),
+      new RoomTile('Camera', 4, 'alarm'),
+      new RoomTile('Laser', 3, 'alarm'),
+      new RoomTile('Motion', 3, 'alarm'),
+      new RoomTile('Detector', 3, 'alarm'),
+      new RoomTile('Fingerprint', 3, 'alarm'),
+      new RoomTile('Thermo', 3, 'alarm'),
+      new RoomTile('Keypad', 3, 'impediment'),
+      new RoomTile('Deadbolt', 3, 'impediment'),
+      new RoomTile('Foyer', 2, 'open-area'),
+      new RoomTile('Atrium', 2, 'open-area'),
     ]
 
-    tableColumns.map((columnArray) => {
-      const table = document.createElement('table')
-      columnArray.map((room) => {
+    const table = document.createElement('table')
+    rooms.map((room) => {
         const row = document.createElement('tr')
         row.innerHTML = `<td>${room.name}</td><td>${room.count}</td>`
         row.className = room.type
         row.addEventListener('click', decrementRoomCount)
         table.appendChild(row)
-      })
-      shadow.appendChild(table)
     })
+    shadow.appendChild(table)
 
     const styleNode = document.createElement('style')
     styleNode.textContent = `
@@ -111,4 +105,4 @@ class BurgleTable extends HTMLElement {
   }
 }
 
-window.customElements.define('burgle-table', BurgleTable)
+window.customElements.define('burgle-rooms', BurgleRooms)
