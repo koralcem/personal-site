@@ -63,6 +63,10 @@ class BurgleRoom extends HTMLElement {
       align-items: center;
       height: 45px;
     }
+
+    .room > div:first-child {
+      padding: 0 10px;
+    }
     `
     shadow.appendChild(styleNode)
   }
