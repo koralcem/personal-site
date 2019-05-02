@@ -62,6 +62,7 @@ class BurgleRoom extends HTMLElement {
       display: flex;
       align-items: center;
       height: 45px;
+      font: 1.2em Helvetica, sans-serif;
     }
 
     .room > div:first-child {
