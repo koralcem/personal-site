@@ -37,6 +37,34 @@ table {
   border-collapse: collapse;
 }
 
-td {
-  padding: 5px;
+.room {
+  display: flex;
+  align-items: center;
+  height: 45px;
+  font: 1.2em Helvetica, sans-serif;
+
+  div:first-child {
+    padding: 0 10px;
+  }
+}
+
+.out-of-game {
+  background-color: transparent;
+  text-decoration: line-through;
+}
+
+.card {
+  width: 450px;
+  display: flex;
+  justify-content: center;
+}
+
+.column {
+  width: 50%;
+  display: flex column;
+}
+
+#container {
+  display: flex;
+  justify-content: center;
 }
