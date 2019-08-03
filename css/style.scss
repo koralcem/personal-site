@@ -1,47 +1,42 @@
 ---
 ---
 
-body
-{
+body {
 	background-color: white;
 	margin:0% 15%;
-	font-family: Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  line-height: 27px;
 }
 
-header img
-{
+header img {
 	vertical-align: middle;
 	display: inline;
 }
 
-h1
-{
+h1 {
 	font-size: 3em;
 	vertical-align: middle;
 	display: inline;
 }
 
-h2
-{
+h2 {
 	font-size: 1.5em;
 }
 
-a, a:link, a:visited
-{
-  color: #006;
+a {
   text-decoration: none;
-  border-bottom: 1px solid rgb(45, 105, 45);
-  border-bottom: 1px solid rgba(45, 105, 45, 0.25);
+  color: blue;
+
+  &:hover, &:active {
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: purple;
+  }
 }
 
-a:hover, a:active, a:focus {
-  color: #060; /* rgb(65, 145, 65);*/
-  text-decoration: none;
-  border-bottom: 1px solid rgb(65, 145, 65);
-  border-bottom: 1px solid rgba(65, 145, 65, 0.75);
-}
-
-li
-{
+li {
 	padding-bottom: .3em;
 }
