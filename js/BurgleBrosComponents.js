@@ -194,6 +194,10 @@ class BurgleCard extends HTMLElement {
       display: flex;
       justify-content: center;
       width: 450px;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
     `
     shadow.appendChild(styleNode)
