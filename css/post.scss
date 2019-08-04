@@ -9,10 +9,13 @@ body {
   justify-content: center;
 }
 
-article {
-  width: 60%;
-}
-
 li {
   margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 750px) {
+  body {
+    width: 750px;
+    margin: 0 auto;
+  }
 }

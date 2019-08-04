@@ -7,20 +7,35 @@ css_files:
 	<h1>Cem Schemel</h1>
 </header>
 
-<h2>Projects</h2>
-<ul>
-  <li>
-    Burgle Bros Recon: An aid for the game Burgle Bros. Starts out with a list of all tiles in the game. Click them as you explore to remove them from the list, and see the remaining rooms at a glance.
-    <ul>
-      <li><a href="burgle-bros-components.html">Using web components:</a> Might not work on older browsers that don't support web components.</li>
-      <li><a href="burgle-bros-react.html">Using React:</a> Same interface recreated using the <a href="https://reactjs.org/">React</a> library.</li>
-    </ul>
-  </li>
-  <li><a href="phonetic-speller.html">Phonetic Speller:</a> Need to spell a word or phrase over the phone to someone? Type or paste it in here and get the corresponding code words. Avoid ambiguity.</li>
-  <li><a href="http://www.psikolojik-hizmetler.com/">Psychological Services Institute website:</a> I created and continue to maintain the website for the Psychological Services Institute in Ankara, Turkey.</li>
-</ul>
+<p>I solve problems. Sometimes computers are involved. They are better than humans at some problems. I have them help us solve these problems, so we can move on to more important things.</p>
 
-<h2>Articles</h2>
+<h2>Projects</h2>
+<div class="project">
+  <h3>Burgle Bros Recon</h3>
+  <p><b>Problem:</b> <a href="http://www.burglebros.com/">Burgle Bros</a> is a cooperative board game, where a team of thieves explore an office building in order to steal what's in the safe. You reveal room tiles as you go, but alarm tiles cause problems. The game provides a reference card of how many of each tile is in the game, so you can technically look at what's been explored and try to guess what the next tile can be. But counting all the explored tiles is tedious.</p>
+  <p><b>Solution:</b> I digitized the reference card. You start out with all tiles in the game. Click on them to keep track of what you've explored, and see at a glance what's left. I made the same tool both with <a href="https://reactjs.org/">React</a>, and with <a href="https://www.webcomponents.org/introduction">web components</a>.</p>
+  <p><b>Results:</b> Less time spent counting tiles, and more time enjoying your game and the company of your friends.</p>
+  <button type="button" onclick="window.location.href='burgle-bros-react.html'">See React implementation</button>
+  <button type="button" onclick="window.location.href='burgle-bros-components.html'">See web components implementation</button>
+</div>
+
+<div class="project">
+  <h3>Phonetic Speller</h3>
+  <p><b>Problem:</b> My full last name is a mess (ask me about it). When I call customer support for anything, I'd like to use the phonetic alphabet to spell it out precisely, but I can never remember the code words.</p>
+  <p><b>Solution:</b> I created a tool where you enter a word or phrase, and get the code words for each of its letters.</p>
+  <p><b>Results:</b> No ambiguity over the phone when pulling up my account.</p>
+  <button type="button" onclick="window.location.href='phonetic-speller.html'">Spell something</button>
+</div>
+
+<div class="project">
+  <h3>Psychological Services Institute website</h3>
+  <p><b>Problem:</b> The Psychological Services Institute in Ankara, Turkey wanted an online presence.</p>
+  <p><b>Solution:</b> I created and continue to maintain their website.</p>
+  <p><b>Results:</b> The institute gets more clients for counseling or its trainings since people can find them online.</p>
+  <button type="button" onclick="window.location.href='http://www.psikolojik-hizmetler.com/'">Visit the site</button>
+</div>
+
+<h2>Writing</h2>
 <ul>
   {% for post in site.posts %}
     <li>

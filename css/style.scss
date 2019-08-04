@@ -1,12 +1,13 @@
 ---
 ---
 
+$accent-primary: rgb(12, 2, 209);
+$accent-secondary: rgb(0, 171, 194);
+
 body {
 	background-color: white;
-	margin:0% 15%;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 20px;
-  line-height: 27px;
+  font-size: 1.3rem;
 }
 
 header img {
@@ -39,4 +40,41 @@ a {
 
 li {
 	padding-bottom: .3em;
+}
+
+.project {
+  border: 1px solid $accent-primary;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+
+  h3 {
+    margin: 0.8rem 0;
+    color: $accent-primary;
+  }
+
+  p {
+    margin: 0.8rem 0;
+  }
+
+  button {
+    font-size: 1.3rem;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: $accent-primary;
+    color: white;
+
+    &:hover {
+      background-color: $accent-secondary;
+      cursor: pointer;
+    }
+  }
+}
+
+// If we're greater than 1000px, stop expanding and stay in the center
+@media screen and (min-width: 1000px) {
+  body {
+    width: 1000px;
+    margin: 0 auto;
+  }
 }
