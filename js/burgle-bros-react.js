@@ -30,7 +30,13 @@ class RoomTable extends React.Component {
       const stride = this.state.rooms.length / numColumns
       const sliceStart = columnIndex * stride
       const sliceEnd = (columnIndex + 1) * stride
-      columnComponents.push(<RoomColumn rooms={this.state.rooms.slice(sliceStart, sliceEnd)} onClick={this.handleClick}/>)
+      columnComponents.push(
+        <RoomColumn
+          key={columnIndex}
+          rooms={this.state.rooms.slice(sliceStart, sliceEnd)}
+          onClick={this.handleClick}
+        />
+      )
     }
 
     return <div className='card'>{columnComponents}</div>
