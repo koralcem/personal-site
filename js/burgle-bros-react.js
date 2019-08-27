@@ -101,4 +101,60 @@ const allRooms = [
   new RoomTile('Foyer', 2, 'open-area'),
   new RoomTile('Atrium', 2, 'open-area'),
 ]
-ReactDOM.render(<RoomTable rooms={allRooms}/>, document.querySelector('#container'))
+
+ReactDOM.render(<RoomTable rooms={allRooms}/>, document.querySelector('#rooms'))
+
+
+class Board extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      squares: Array(16).fill(false)
+    }
+  }
+
+  handleClick(i) {
+    const squares = this.state.squares.slice()
+    squares[i] = !squares[i]
+    this.setState({ squares })
+  }
+
+  renderSquare(i, coords) {
+    return (
+      <Square
+        value={coords}
+        revealed={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
+    )
+  }
+
+  render() {
+    return (
+      <div className='table'>
+        <div>{this.props.title}</div>
+        <div>{this.renderSquare(0, 'A1')}{this.renderSquare(1, 'B1')}{this.renderSquare(2, 'C1')}{this.renderSquare(3, 'D1')}</div>
+        <div>{this.renderSquare(4, 'A2')}{this.renderSquare(5, 'B2')}{this.renderSquare(6, 'C2')}{this.renderSquare(7, 'D2')}</div>
+        <div>{this.renderSquare(8, 'A3')}{this.renderSquare(9, 'B3')}{this.renderSquare(10, 'C3')}{this.renderSquare(11, 'D3')}</div>
+        <div>{this.renderSquare(12, 'A4')}{this.renderSquare(13, 'B4')}{this.renderSquare(14, 'C4')}{this.renderSquare(15, 'D4')}</div>
+      </div>
+    )
+  }
+}
+
+class Square extends React.Component {
+  render() {
+    return (
+      <button
+        className={`square ${this.props.revealed ? 'revealed' : ''}`}
+        onClick={() => this.props.onClick()}
+      >
+        {this.props.value}
+      </button>
+    )
+  }
+}
+
+ReactDOM.render(<Board title='1st floor'/>, document.querySelector('#floor-1-table'))
+ReactDOM.render(<Board title='2nd floor'/>, document.querySelector('#floor-2-table'))
+ReactDOM.render(<Board title='3rd floor'/>, document.querySelector('#floor-3-table'))

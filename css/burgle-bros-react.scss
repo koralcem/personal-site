@@ -1,6 +1,8 @@
 ---
 ---
 
+$alarm-color: rgb(252, 64, 64);
+
 .safe {
   background-color: rgb(6, 184, 0);
 }
@@ -22,7 +24,7 @@
 }
 
 .alarm {
-  background-color: rgb(252, 64, 64);
+  background-color: $alarm-color;
 }
 
 .impediment {
@@ -41,7 +43,7 @@ table {
   display: flex;
   align-items: center;
   height: 45px;
-  font: 1.2em Helvetica, sans-serif;
+  font-size: 1.2em;
 
   div:first-child {
     padding: 0 10px;
@@ -54,7 +56,7 @@ table {
 }
 
 .card {
-  width: 450px;
+  width: 350px;
   display: flex;
   justify-content: center;
 }
@@ -66,9 +68,36 @@ table {
 
 #container {
   display: flex;
-  justify-content: center;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  font-family: Helvetica, sans-serif;
+
+  moz-user-select: none;
+  webkit-user-select: none;
+  ms-user-select: none;
   user-select: none;
+
+  & > div {
+    margin: 10px;
+  }
+}
+
+$square-size: 60px;
+
+.square {
+  background-color: lightgray;
+  width: $square-size;
+  height: $square-size;
+  font-size: 2em;
+  color: white;
+  border: 1px solid white;
+
+  &.revealed {
+    background-color: $alarm-color;
+  }
+
+  &:focus {
+    outline: none;
+  }
 }
