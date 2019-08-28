@@ -119,24 +119,40 @@ class Board extends React.Component {
     this.setState({ squares })
   }
 
-  renderSquare(i, coords) {
+  renderSquare(index, coords) {
     return (
       <Square
+        key={index}
         value={coords}
-        revealed={this.state.squares[i]}
-        onClick={() => this.handleClick(i)}
+        revealed={this.state.squares[index]}
+        onClick={() => this.handleClick(index)}
       />
     )
+  }
+
+  labelForRowAndColumn(row, column) {
+    return String.fromCharCode('A'.charCodeAt() + column) + (row + 1).toString()
+  }
+
+  renderGrid() {
+    const gridSize = 4
+    let grid = []
+    for (let row = 0; row < gridSize; row ++) {
+      let squaresInRow = []
+      for (let column = 0; column < gridSize; column++) {
+        squaresInRow.push(this.renderSquare(row * gridSize + column, this.labelForRowAndColumn(row, column)))
+      }
+      grid.push(<div key={row}>{squaresInRow}</div>)
+    }
+
+    return grid
   }
 
   render() {
     return (
       <div className='table'>
         <div>{this.props.title}</div>
-        <div>{this.renderSquare(0, 'A1')}{this.renderSquare(1, 'B1')}{this.renderSquare(2, 'C1')}{this.renderSquare(3, 'D1')}</div>
-        <div>{this.renderSquare(4, 'A2')}{this.renderSquare(5, 'B2')}{this.renderSquare(6, 'C2')}{this.renderSquare(7, 'D2')}</div>
-        <div>{this.renderSquare(8, 'A3')}{this.renderSquare(9, 'B3')}{this.renderSquare(10, 'C3')}{this.renderSquare(11, 'D3')}</div>
-        <div>{this.renderSquare(12, 'A4')}{this.renderSquare(13, 'B4')}{this.renderSquare(14, 'C4')}{this.renderSquare(15, 'D4')}</div>
+        {this.renderGrid()}
       </div>
     )
   }
