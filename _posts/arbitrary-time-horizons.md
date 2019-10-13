@@ -1,0 +1,2 @@
+- Not showering every day
+- Getting groceries once a week
