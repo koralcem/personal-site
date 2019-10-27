@@ -1,11 +1,24 @@
 'use strict';
 
-class RoomTile {
-  constructor(name, count, type) {
-    this.name = name
-    this.count = count    // Total occurrences of this tile in the game
-    this.type = type
-  }
+const roomTypes = {
+  'Safe': 'safe',
+  'Stairs': 'stair',
+  'Walkway': 'beneficial',
+  'Laboratory': 'beneficial',
+  'Lavatory': 'beneficial',
+  'Service Duct': 'special-movement',
+  'Secret Door': 'special-movement',
+  'Computer': 'computer',
+  'Camera': 'alarm',
+  'Laser': 'alarm',
+  'Motion': 'alarm',
+  'Detector': 'alarm',
+  'Fingerprint': 'alarm',
+  'Thermo': 'alarm',
+  'Keypad': 'impediment',
+  'Deadbolt': 'impediment',
+  'Foyer': 'open-area',
+  'Atrium': 'open-area',
 }
 
 class RoomTable extends React.Component {
@@ -52,7 +65,6 @@ class RoomColumn extends React.Component {
             key={room.name}
             name={room.name}
             remaining={room.count}
-            type={room.type}
             onClick={this.props.onClick}
           />
         )}
@@ -63,7 +75,7 @@ class RoomColumn extends React.Component {
 
 class RoomRow extends React.Component {
   render() {
-    let className = `room ${this.props.type}`
+    let className = `room ${roomTypes[this.props.name]}`
     if (this.props.remaining === 0) {
       className += ' out-of-game'
     }
@@ -82,24 +94,24 @@ class RoomRow extends React.Component {
 }
 
 const allRooms = [
-  new RoomTile('Safe', 3, 'safe'),
-  new RoomTile('Stairs', 3, 'stair'),
-  new RoomTile('Walkway', 3, 'beneficial'),
-  new RoomTile('Laboratory', 2, 'beneficial'),
-  new RoomTile('Lavatory', 1, 'beneficial'),
-  new RoomTile('Service Duct', 2, 'special-movement'),
-  new RoomTile('Secret Door', 2, 'special-movement'),
-  new RoomTile('Computer', 3, 'computer'),
-  new RoomTile('Camera', 4, 'alarm'),
-  new RoomTile('Laser', 3, 'alarm'),
-  new RoomTile('Motion', 3, 'alarm'),
-  new RoomTile('Detector', 3, 'alarm'),
-  new RoomTile('Fingerprint', 3, 'alarm'),
-  new RoomTile('Thermo', 3, 'alarm'),
-  new RoomTile('Keypad', 3, 'impediment'),
-  new RoomTile('Deadbolt', 3, 'impediment'),
-  new RoomTile('Foyer', 2, 'open-area'),
-  new RoomTile('Atrium', 2, 'open-area'),
+  { name: 'Safe', count: 3 },
+  { name: 'Stairs', count: 3 },
+  { name: 'Walkway', count: 3 },
+  { name: 'Laboratory', count: 2 },
+  { name: 'Lavatory', count: 1 },
+  { name: 'Service Duct', count: 2 },
+  { name: 'Secret Door', count: 2 },
+  { name: 'Computer', count: 3 },
+  { name: 'Camera', count: 4 },
+  { name: 'Laser', count: 3 },
+  { name: 'Motion', count: 3 },
+  { name: 'Detector', count: 3 },
+  { name: 'Fingerprint', count: 3 },
+  { name: 'Thermo', count: 3 },
+  { name: 'Keypad', count: 3 },
+  { name: 'Deadbolt', count: 3 },
+  { name: 'Foyer', count: 2 },
+  { name: 'Atrium', count: 2 },
 ]
 
 class Board extends React.Component {
