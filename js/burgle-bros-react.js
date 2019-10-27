@@ -22,32 +22,18 @@ const roomTypes = {
 }
 
 class RoomTable extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      rooms: this.props.rooms
-    }
-    this.handleClick = this.handleClick.bind(this)
-  }
-
-  handleClick(roomName) {
-    let rooms = this.state.rooms.slice()
-    rooms.find( room => room.name === roomName ).count -= 1
-    this.setState({rooms: rooms})
-  }
-
   render() {
     const numColumns = 2
     let columnComponents = []
     for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
-      const stride = this.state.rooms.length / numColumns
+      const stride = this.props.rooms.length / numColumns
       const sliceStart = columnIndex * stride
       const sliceEnd = (columnIndex + 1) * stride
       columnComponents.push(
         <RoomColumn
           key={columnIndex}
-          rooms={this.state.rooms.slice(sliceStart, sliceEnd)}
-          onClick={this.handleClick}
+          rooms={this.props.rooms.slice(sliceStart, sliceEnd)}
+          onClick={this.props.onRoomClick}
         />
       )
     }
@@ -154,7 +140,9 @@ class BurgleBrosReference extends React.Component {
   render () {
     return (
       <div>
-        <RoomTable rooms={this.props.state.rooms} />
+        <RoomTable rooms={this.props.state.rooms} onRoomClick={(roomName) =>
+          store.dispatch({ type: 'EXPLORE_ROOM', roomName })
+        } />
         <Board title='1st floor' squares={this.props.state.floors[0]} onSquareClick={(roomIndex) =>
           this.onSquareClick(0, roomIndex)
         } />
@@ -211,6 +199,20 @@ const reducer = (state = initialState, action) => {
           ...state.floors.slice(0, action.floor),
           newFloorState,
           ...state.floors.slice(action.floor + 1)
+        ]
+      })
+
+    case 'EXPLORE_ROOM':
+      const roomIndex = state.rooms.findIndex(room => room.name === action.roomName)
+      const newRoom = Object.assign({}, state.rooms[roomIndex], {
+        count: state.rooms[roomIndex].count - 1
+      })
+
+      return Object.assign({}, state, {
+        rooms: [
+          ...state.rooms.slice(0, roomIndex),
+          newRoom,
+          ...state.rooms.slice(roomIndex + 1)
         ]
       })
 
