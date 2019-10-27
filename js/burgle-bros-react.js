@@ -103,17 +103,13 @@ const allRooms = [
 ]
 
 class Board extends React.Component {
-  handleClick(i) {
-    this.props.onSquareClick(i)
-  }
-
   renderSquare(index, coords) {
     return (
       <Square
         key={index}
         value={coords}
         revealed={this.props.squares[index]}
-        onClick={() => this.handleClick(index)}
+        onClick={() => this.props.onSquareClick(index)}
       />
     )
   }
@@ -160,31 +156,23 @@ class Square extends React.Component {
 }
 
 class BurgleBrosReference extends React.Component {
+  onSquareClick (floor, roomIndex) {
+    store.dispatch({ type: 'GUARD_TOGGLE', floor, roomIndex})
+  }
+
   render () {
     return (
       <div>
         <RoomTable rooms={allRooms} />
-        <Board title='1st floor' squares={this.props.state[0]} onSquareClick={(roomIndex) => {
-          store.dispatch({
-            type: 'GUARD_TOGGLE',
-            floor: 0,
-            roomIndex
-          })
-        }} />
-        <Board title='2nd floor' squares={this.props.state[1]} onSquareClick={(roomIndex) => {
-          store.dispatch({
-            type: 'GUARD_TOGGLE',
-            floor: 1,
-            roomIndex
-          })
-        }} />
-        <Board title='3rd floor' squares={this.props.state[2]} onSquareClick={(roomIndex) => {
-          store.dispatch({
-            type: 'GUARD_TOGGLE',
-            floor: 2,
-            roomIndex
-          })
-        }} />
+        <Board title='1st floor' squares={this.props.state[0]} onSquareClick={(roomIndex) =>
+          this.onSquareClick(0, roomIndex)
+        } />
+        <Board title='2nd floor' squares={this.props.state[1]} onSquareClick={(roomIndex) =>
+          this.onSquareClick(1, roomIndex)
+        } />
+        <Board title='3rd floor' squares={this.props.state[2]} onSquareClick={(roomIndex) =>
+          this.onSquareClick(2, roomIndex)
+        } />
       </div>
     )
   }
@@ -195,11 +183,11 @@ const initialState = [Array(16).fill(false), Array(16).fill(false), Array(16).fi
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'GUARD_TOGGLE':
-      const floorInQuestion = state[action.floor]
+      const currentFloor = state[action.floor]
       const newFloorState = [
-        ...floorInQuestion.slice(0, action.roomIndex),
-        !floorInQuestion[action.roomIndex],
-        ...floorInQuestion.slice(action.roomIndex + 1)
+        ...currentFloor.slice(0, action.roomIndex),
+        !currentFloor[action.roomIndex],
+        ...currentFloor.slice(action.roomIndex + 1)
       ]
       const newState = [
         ...state.slice(0, action.floor),
@@ -221,8 +209,3 @@ const render = () => {
 
 store.subscribe(render)
 render()
-
-// refactor handleClick?
-// refactor dispatch?
-// created sub-dispatcher for a single board?
-// make explored rooms part of the state too
