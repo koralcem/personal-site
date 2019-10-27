@@ -93,27 +93,6 @@ class RoomRow extends React.Component {
   }
 }
 
-const allRooms = [
-  { name: 'Safe', count: 3 },
-  { name: 'Stairs', count: 3 },
-  { name: 'Walkway', count: 3 },
-  { name: 'Laboratory', count: 2 },
-  { name: 'Lavatory', count: 1 },
-  { name: 'Service Duct', count: 2 },
-  { name: 'Secret Door', count: 2 },
-  { name: 'Computer', count: 3 },
-  { name: 'Camera', count: 4 },
-  { name: 'Laser', count: 3 },
-  { name: 'Motion', count: 3 },
-  { name: 'Detector', count: 3 },
-  { name: 'Fingerprint', count: 3 },
-  { name: 'Thermo', count: 3 },
-  { name: 'Keypad', count: 3 },
-  { name: 'Deadbolt', count: 3 },
-  { name: 'Foyer', count: 2 },
-  { name: 'Atrium', count: 2 },
-]
-
 class Board extends React.Component {
   renderSquare(index, coords) {
     return (
@@ -175,14 +154,14 @@ class BurgleBrosReference extends React.Component {
   render () {
     return (
       <div>
-        <RoomTable rooms={allRooms} />
-        <Board title='1st floor' squares={this.props.state[0]} onSquareClick={(roomIndex) =>
+        <RoomTable rooms={this.props.state.rooms} />
+        <Board title='1st floor' squares={this.props.state.floors[0]} onSquareClick={(roomIndex) =>
           this.onSquareClick(0, roomIndex)
         } />
-        <Board title='2nd floor' squares={this.props.state[1]} onSquareClick={(roomIndex) =>
+        <Board title='2nd floor' squares={this.props.state.floors[1]} onSquareClick={(roomIndex) =>
           this.onSquareClick(1, roomIndex)
         } />
-        <Board title='3rd floor' squares={this.props.state[2]} onSquareClick={(roomIndex) =>
+        <Board title='3rd floor' squares={this.props.state.floors[2]} onSquareClick={(roomIndex) =>
           this.onSquareClick(2, roomIndex)
         } />
       </div>
@@ -190,23 +169,50 @@ class BurgleBrosReference extends React.Component {
   }
 }
 
-const initialState = [Array(16).fill(false), Array(16).fill(false), Array(16).fill(false)]
+const initialState = {
+  rooms: [
+    { name: 'Safe', count: 3 },
+    { name: 'Stairs', count: 3 },
+    { name: 'Walkway', count: 3 },
+    { name: 'Laboratory', count: 2 },
+    { name: 'Lavatory', count: 1 },
+    { name: 'Service Duct', count: 2 },
+    { name: 'Secret Door', count: 2 },
+    { name: 'Computer', count: 3 },
+    { name: 'Camera', count: 4 },
+    { name: 'Laser', count: 3 },
+    { name: 'Motion', count: 3 },
+    { name: 'Detector', count: 3 },
+    { name: 'Fingerprint', count: 3 },
+    { name: 'Thermo', count: 3 },
+    { name: 'Keypad', count: 3 },
+    { name: 'Deadbolt', count: 3 },
+    { name: 'Foyer', count: 2 },
+    { name: 'Atrium', count: 2 },
+  ],
+  floors: [
+    Array(16).fill(false),
+    Array(16).fill(false),
+    Array(16).fill(false)]
+}
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'GUARD_TOGGLE':
-      const currentFloor = state[action.floor]
+      const currentFloor = state.floors[action.floor]
       const newFloorState = [
         ...currentFloor.slice(0, action.roomIndex),
         !currentFloor[action.roomIndex],
         ...currentFloor.slice(action.roomIndex + 1)
       ]
-      const newState = [
-        ...state.slice(0, action.floor),
-        newFloorState,
-        ...state.slice(action.floor + 1)
-      ]
-      return newState
+
+      return Object.assign({}, state, {
+        floors: [
+          ...state.floors.slice(0, action.floor),
+          newFloorState,
+          ...state.floors.slice(action.floor + 1)
+        ]
+      })
 
     default:
       return state
