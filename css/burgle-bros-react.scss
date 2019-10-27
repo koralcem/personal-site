@@ -66,7 +66,7 @@ table {
   display: flex column;
 }
 
-#container {
+#root > div {
   display: flex;
   flex-flow: row wrap;
   align-items: center;

@@ -102,9 +102,6 @@ const allRooms = [
   new RoomTile('Atrium', 2, 'open-area'),
 ]
 
-ReactDOM.render(<RoomTable rooms={allRooms}/>, document.querySelector('#rooms'))
-
-
 class Board extends React.Component {
   constructor(props) {
     super(props)
@@ -171,6 +168,21 @@ class Square extends React.Component {
   }
 }
 
-ReactDOM.render(<Board title='1st floor'/>, document.querySelector('#floor-1-table'))
-ReactDOM.render(<Board title='2nd floor'/>, document.querySelector('#floor-2-table'))
-ReactDOM.render(<Board title='3rd floor'/>, document.querySelector('#floor-3-table'))
+class BurgleBrosReference extends React.Component {
+  render () {
+    return (
+      <div>
+        <RoomTable rooms={allRooms} />
+        <Board title='1st floor' />
+        <Board title='2nd floor' />
+        <Board title='3rd floor' />
+      </div>
+    )
+  }
+}
+
+const render = () => {
+  ReactDOM.render(<BurgleBrosReference />, document.querySelector('#root'))
+}
+
+render()
