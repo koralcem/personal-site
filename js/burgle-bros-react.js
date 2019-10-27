@@ -103,17 +103,8 @@ const allRooms = [
 ]
 
 class Board extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      squares: Array(16).fill(false)
-    }
-  }
-
   handleClick(i) {
-    const squares = this.state.squares.slice()
-    squares[i] = !squares[i]
-    this.setState({ squares })
+    this.props.onSquareClick(i)
   }
 
   renderSquare(index, coords) {
@@ -121,7 +112,7 @@ class Board extends React.Component {
       <Square
         key={index}
         value={coords}
-        revealed={this.state.squares[index]}
+        revealed={this.props.squares[index]}
         onClick={() => this.handleClick(index)}
       />
     )
@@ -173,16 +164,65 @@ class BurgleBrosReference extends React.Component {
     return (
       <div>
         <RoomTable rooms={allRooms} />
-        <Board title='1st floor' />
-        <Board title='2nd floor' />
-        <Board title='3rd floor' />
+        <Board title='1st floor' squares={this.props.state[0]} onSquareClick={(roomIndex) => {
+          store.dispatch({
+            type: 'GUARD_TOGGLE',
+            floor: 0,
+            roomIndex
+          })
+        }} />
+        <Board title='2nd floor' squares={this.props.state[1]} onSquareClick={(roomIndex) => {
+          store.dispatch({
+            type: 'GUARD_TOGGLE',
+            floor: 1,
+            roomIndex
+          })
+        }} />
+        <Board title='3rd floor' squares={this.props.state[2]} onSquareClick={(roomIndex) => {
+          store.dispatch({
+            type: 'GUARD_TOGGLE',
+            floor: 2,
+            roomIndex
+          })
+        }} />
       </div>
     )
   }
 }
 
-const render = () => {
-  ReactDOM.render(<BurgleBrosReference />, document.querySelector('#root'))
+const initialState = [Array(16).fill(false), Array(16).fill(false), Array(16).fill(false)]
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'GUARD_TOGGLE':
+      const floorInQuestion = state[action.floor]
+      const newFloorState = [
+        ...floorInQuestion.slice(0, action.roomIndex),
+        !floorInQuestion[action.roomIndex],
+        ...floorInQuestion.slice(action.roomIndex + 1)
+      ]
+      const newState = [
+        ...state.slice(0, action.floor),
+        newFloorState,
+        ...state.slice(action.floor + 1)
+      ]
+      return newState
+
+    default:
+      return state
+  }
 }
 
+const store = Redux.createStore(reducer)
+
+const render = () => {
+  ReactDOM.render(<BurgleBrosReference state={store.getState()}/>, document.querySelector('#root'))
+}
+
+store.subscribe(render)
 render()
+
+// refactor handleClick?
+// refactor dispatch?
+// created sub-dispatcher for a single board?
+// make explored rooms part of the state too
