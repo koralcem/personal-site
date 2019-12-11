@@ -3,6 +3,8 @@ layout: post
 title: "Arbitrary time spans"
 ---
 
+# Arbitrary time spans
+
 I don't shower every day.
 
 Some people find that off putting. Why? As far as I'm told I don't stink. Apparently showering daily is just what one is supposed to do. I don't follow. Why should my personal hygiene be tied to the rate at which the Earth revolves around its axis? Some days it's cold outside and I sit in front of a computer for way too long, never breaking a sweat. Other days I go riding my bike among the hills of Portland on a hot summer day. Why would you expect a consistent frequency of showering through all those different conditions? [Some](https://www.lifehack.org/355349/science-suggests-you-should-abandon-the-habit-showering-every-day) [people](https://www.lifeadvancer.com/taking-a-shower-every-day/) even say showering every day is bad for you.
