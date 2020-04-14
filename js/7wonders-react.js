@@ -15,16 +15,17 @@ class PlayerNamesRow extends React.Component {
 
 class CategoryRow extends React.Component {
   updatePlayerScore(e) {
-    // e.target is the <input> element that was updated
-    // it has a 'player' attribute on it
-    // get all <input> elements with the matching 'player' attribute
-    // The resulting set is the individual score elements
-    // add up the values, this is the player's sum
-    // dispatch action with the player number and the new score
-    //
-    // In the reducer, update the total score for the current player
+    const playerNeedingUpdate = e.target.getAttribute('player')
+    const playerScoreFields = document.querySelectorAll(`[player="${playerNeedingUpdate}"]`)
+    let newScore = 0
+    playerScoreFields.forEach((field) => {
+      newScore += Number(field.value)
+    })
+
     store.dispatch({
-      type: 'SCORE_ENTERED'
+      type: 'SCORE_ENTERED',
+      player: Number(playerNeedingUpdate),
+      newScore
     })
   }
 
@@ -100,7 +101,9 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SCORE_ENTERED':
       // console.log('input changes')
-      return Object.assign({}, state)
+      const newState = Object.assign({}, state)
+      newState.scores[action.player] = action.newScore
+      return newState
 
     default:
       return state
