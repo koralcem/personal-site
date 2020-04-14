@@ -5,8 +5,8 @@ class PlayerNamesRow extends React.Component {
     return (
       <tr>
         <td></td>
-        {this.props.players.map(player => (
-          <td key={player}>{player}</td>
+        {this.props.players.map((player, playerIndex) => (
+          <td key={playerIndex}>{player.name}</td>
         ))}
       </tr>
     )
@@ -24,7 +24,7 @@ class CategoryRow extends React.Component {
 
     store.dispatch({
       type: 'SCORE_ENTERED',
-      player: Number(playerNeedingUpdate),
+      playerIndex: Number(playerNeedingUpdate),
       newScore
     })
   }
@@ -66,7 +66,7 @@ class ScoreSheet extends React.Component {
               label={category}
               numPlayers={this.props.state.players.length} />
           ))}
-          <TotalScoresRow scores={this.props.state.scores} />
+          <TotalScoresRow scores={this.props.state.players.map(player => player.score)} />
         </tbody>
       </table>
     )
@@ -75,16 +75,10 @@ class ScoreSheet extends React.Component {
 
 const initialState = {
   players: [
-    'Player 1',
-    'Player 2',
-    'Player 3',
-    'Player 4',
-  ],
-  scores: [
-    0,
-    0,
-    0,
-    0,
+    { name: 'Player 1', score: 0 },
+    { name: 'Player 2', score: 0 },
+    { name: 'Player 3', score: 0 },
+    { name: 'Player 4', score: 0 },
   ],
   categories: [
     'Military',
@@ -102,7 +96,7 @@ const reducer = (state = initialState, action) => {
     case 'SCORE_ENTERED':
       // console.log('input changes')
       const newState = Object.assign({}, state)
-      newState.scores[action.player] = action.newScore
+      newState.players[action.playerIndex].score = action.newScore
       return newState
 
     default:
