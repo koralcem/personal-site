@@ -1,12 +1,29 @@
 'use strict';
 
 class PlayerNamesRow extends React.Component {
+  updatePlayerName(e) {
+    const playerNeedingUpdate = e.target.dataset.nameForPlayer
+
+    store.dispatch({
+      type: 'NAME_CHANGED',
+      playerIndex: Number(playerNeedingUpdate),
+      newName: e.target.value
+    })
+  }
+
   render () {
     return (
       <tr>
         <td></td>
         {this.props.players.map((player, playerIndex) => (
-          <td key={playerIndex}>{player.name}</td>
+          <td key={playerIndex}>
+            <input
+              type='text'
+              data-name-for-player={playerIndex}
+              value={player.name}
+              onChange={(event) => this.updatePlayerName(event)}
+            />
+          </td>
         ))}
       </tr>
     )
@@ -15,8 +32,8 @@ class PlayerNamesRow extends React.Component {
 
 class CategoryRow extends React.Component {
   updatePlayerScore(e) {
-    const playerNeedingUpdate = e.target.getAttribute('player')
-    const playerScoreFields = document.querySelectorAll(`[player="${playerNeedingUpdate}"]`)
+    const playerNeedingUpdate = e.target.dataset.scoreForPlayer
+    const playerScoreFields = document.querySelectorAll(`[data-score-for-player="${playerNeedingUpdate}"]`)
     let newScore = 0
     playerScoreFields.forEach((field) => {
       newScore += Number(field.value)
@@ -34,7 +51,7 @@ class CategoryRow extends React.Component {
       <tr>
         <td>{this.props.label}</td>
         {[...Array(this.props.numPlayers)].map((x, i) =>
-          <td key={i}><input type='number' player={i} onChange={(event) => this.updatePlayerScore(event)}/></td>
+          <td key={i}><input type='number' data-score-for-player={i} onChange={(event) => this.updatePlayerScore(event)}/></td>
         )}
       </tr>
     )
@@ -92,11 +109,17 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
+  let newState = null
+
   switch (action.type) {
     case 'SCORE_ENTERED':
-      // console.log('input changes')
-      const newState = Object.assign({}, state)
+      newState = Object.assign({}, state)
       newState.players[action.playerIndex].score = action.newScore
+      return newState
+
+    case 'NAME_CHANGED':
+      newState = Object.assign({}, state)
+      newState.players[action.playerIndex].name = action.newName
       return newState
 
     default:
