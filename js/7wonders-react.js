@@ -1,5 +1,37 @@
 'use strict';
 
+class AddRemovePlayersRow extends React.Component {
+  removePlayer(e) {
+    store.dispatch({
+      type: 'REMOVE_PLAYER',
+      playerIndex: Number(e.target.dataset.player)
+    })
+  }
+
+  addPlayer(e) {
+    store.dispatch({ type: 'ADD_PLAYER' })
+  }
+
+  render () {
+    return (
+      <tr>
+        <td></td>
+        {[...Array(this.props.numPlayers)].map((x, i) =>
+          <td key={i}>
+            <button
+              type='button'
+              data-player={i}
+              onClick={(event) => this.removePlayer(event)}>
+                Remove
+            </button>
+          </td>
+        )}
+        <td><button type='button' onClick={(event) => this.addPlayer(event)}>Add player</button></td>
+      </tr>
+    )
+  }
+}
+
 class PlayerNamesRow extends React.Component {
   updatePlayerName(e) {
     const playerNeedingUpdate = e.target.dataset.nameForPlayer
@@ -76,6 +108,7 @@ class ScoreSheet extends React.Component {
     return (
       <table>
         <tbody>
+          <AddRemovePlayersRow numPlayers={this.props.state.players.length} />
           <PlayerNamesRow players={this.props.state.players}/>
           {this.props.state.categories.map(category => (
             <CategoryRow
@@ -109,17 +142,23 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-  let newState = null
+  let newState = Object.assign({}, state)
 
   switch (action.type) {
     case 'SCORE_ENTERED':
-      newState = Object.assign({}, state)
       newState.players[action.playerIndex].score = action.newScore
       return newState
 
     case 'NAME_CHANGED':
-      newState = Object.assign({}, state)
       newState.players[action.playerIndex].name = action.newName
+      return newState
+
+    case 'ADD_PLAYER':
+      newState.players.push({ name: 'New player', score: 0 })
+      return newState
+
+    case 'REMOVE_PLAYER':
+      newState.players.splice(action.playerIndex, 1)
       return newState
 
     default:
