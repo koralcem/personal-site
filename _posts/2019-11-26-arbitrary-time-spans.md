@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Arbitrary time spans"
+tag: thoughts
 ---
 
 # Arbitrary time spans

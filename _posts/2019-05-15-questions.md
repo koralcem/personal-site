@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Some things I’m curious about"
+tag: thoughts
 ---
 
 # Some things I’m curious about

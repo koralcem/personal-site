@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "A different kind of efficient"
+tag: thoughts
 ---
 
 # A different kind of efficient

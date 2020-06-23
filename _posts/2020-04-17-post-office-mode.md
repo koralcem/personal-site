@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Post office mode for email"
+tag: thoughts
 ---
 
 # Post office mode for email

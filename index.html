@@ -43,14 +43,18 @@ css_files:
 </div>
 
 <h2>Writing</h2>
-<ul>
-  <li><a href="https://blog.polleverywhere.com/benefits-of-working-from-home/">11 benefits of working from home</a> (guest post on the Poll Everywhere blog)</li>
-  {% for post in site.posts %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+{% for tag in site.tags %}
+  <h3>{{ tag[0] | capitalize }}</h3>
+  <ul>
+    {% if tag[0] == "thoughts" %}
+      <li><a href="https://blog.polleverywhere.com/benefits-of-working-from-home/">11 benefits of working from home</a> (guest post on the Poll Everywhere blog)</li>
+    {% endif %}
+
+    {% for post in tag[1] %}
+    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endfor %}
 
 <h2>Contact</h2>
 <p>Feel free to email me at <a href="mailto:koralcem@gmail.com">koralcem@gmail.com</a>. You can also find me on <a href="https://github.com/koralcem">GitHub</a> and <a href="https://www.linkedin.com/in/cemschemel/">LinkedIn</a>.</p>

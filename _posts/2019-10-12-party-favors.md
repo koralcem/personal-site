@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Party favors"
+tag: thoughts
 ---
 
 # Party favors
