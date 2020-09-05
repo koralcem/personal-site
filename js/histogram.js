@@ -1,5 +1,5 @@
 const chartState = {
-  numbers: [2, 3, 5, 5, 7, 9, 2, 3, 5, 5, 7, 9, 2, 3, 5, 5, 7, 9],
+  numbers: [2, 3, 5, 5, 7, 9, 9],
   domain: [0, 10],
   correctRange: [5, 8],
   showCorrectRange: false,
@@ -176,7 +176,7 @@ function renderChart (state) {
   const mean = d3.mean(state.numbers)
 
   const meanGroup = d3.select('.mean')
-  meanGroup.select('text').text(`Mean: ${mean}`)
+  meanGroup.select('text').text(`Mean: ${d3.format('.2f')(mean)}`)
   meanGroup.transition().duration(500)
     .attr('transform', `translate(${x(mean)}, 0)`)
 }
@@ -187,7 +187,7 @@ function renderControls (state) {
 
   dataJoin.enter()
     .append('button')
-    .text(d => d)
+    .text(d => d3.format('.2f')(d))
     .on('click', (event, d) => {
       state.numbers.splice(state.numbers.indexOf(d), 1)
       renderState(state)
@@ -213,10 +213,8 @@ renderState(chartState)
 
 /*
 TODO:
-- Format all numbers to 2 significant digits
-- Better handling of the y axis scaling. It doesn't have to scale up and down with *every* response
-- Mean: make it a bubble? What does that mean exactly?
 === Ask for feedback here
+- Mean: make it a bubble? What does that mean exactly?
 - Validation of all inputs
 - Do we want to expose number of bins to user?
 - Better styling of everything: controls on bottom, widths of input fields, axis labels, etc.
