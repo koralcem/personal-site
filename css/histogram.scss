@@ -1,0 +1,14 @@
+---
+---
+
+.bars {
+  rect {
+    fill: steelblue;
+  }
+
+  &[show-correct='true'] {
+    rect.correct {
+      fill: green;
+    }
+  }
+}
