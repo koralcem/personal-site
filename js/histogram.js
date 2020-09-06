@@ -45,6 +45,11 @@ function initChart (state) {
     .classed('chart', true)
     .attr('transform', `translate(${state.margins.left}, ${state.margins.top})`)
 
+  // append a group to house the shaded correctness area
+  d3.select('.chart')
+  .append('g')
+  .classed('correct-area', true)
+
   // append a group to house the bars of the chart
   d3.select('.chart')
     .append('g')
@@ -154,9 +159,11 @@ function renderChart (state) {
 
   const isBinCorrect = (bin) => state.correctRange[0] <= bin.x0 && bin.x1 <= state.correctRange[1]
 
-    // Render the bars
+  // add an attribute to the chart to signal whether we're showing correctness
+  d3.select('.chart').attr('show-correct', () => state.showCorrectRange)
+
+  // Render the bars
   const dataJoin = d3.select('.bars')
-    .attr('show-correct', () => state.showCorrectRange)
     .selectAll('rect')
     .data(bins, bin => bin.x0)
 
@@ -171,6 +178,19 @@ function renderChart (state) {
       .attr('y', bin => y(bin.length))
 
   dataJoin.exit().remove()
+
+  // correct range
+  const correctnessDataJoin = d3.select('.correct-area')
+    .selectAll('rect')
+    .data([state.correctRange])
+
+  correctnessDataJoin.enter()
+    .append('rect')
+    .merge(correctnessDataJoin)
+      .attr('x', range => x(range[0]))
+      .attr('width', range => x(range[1]) - x(range[0]))
+      .attr('y', 0)
+      .attr('height', state.innerDimensions.height)
 
   // Render the mean line
   const mean = d3.mean(state.numbers)

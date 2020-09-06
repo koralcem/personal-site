@@ -1,14 +1,24 @@
 ---
 ---
 
-.bars {
-  rect {
+.chart {
+  .bars rect {
     fill: steelblue;
   }
 
+  .correct-area rect {
+    fill: lightgreen;
+    opacity: 0.5;
+    display: none;
+  }
+
   &[show-correct='true'] {
-    rect.correct {
+    .bars rect.correct {
       fill: green;
+    }
+
+    .correct-area rect {
+      display: unset;
     }
   }
 }
