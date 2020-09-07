@@ -1,6 +1,38 @@
 ---
 ---
 
-td, tr, table {
-  // border: 1px solid black;
+tr[category='Military'] {
+  background-color: rgb(243, 62, 62);
+}
+
+tr[category='Treasury'] {
+  background-color: gold;
+}
+
+tr[category='Wonders'] {
+  background-color: goldenrod;
+}
+
+tr[category='Civilian'] {
+  background-color: rgb(77, 144, 245);
+}
+
+tr[category='Commerce'] {
+  background-color: rgb(255, 193, 78)
+}
+
+tr[category='Guild'] {
+  background-color: rgb(190, 107, 190);
+}
+
+tr[category='Science'] {
+  background-color: rgb(93, 158, 93);
+}
+
+input {
+  width: 50px;
+}
+
+tr[category] td {
+  padding: 5px;
 }

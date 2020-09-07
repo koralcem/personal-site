@@ -80,7 +80,7 @@ class CategoryRow extends React.Component {
 
   render () {
     return (
-      <tr>
+      <tr category={this.props.label}>
         <td>{this.props.label}</td>
         {[...Array(this.props.numPlayers)].map((x, i) =>
           <td key={i}><input type='number' data-score-for-player={i} onChange={(event) => this.updatePlayerScore(event)}/></td>
@@ -96,7 +96,7 @@ class TotalScoresRow extends React.Component {
       <tr>
         <td>Total</td>
         {this.props.scores.map((score, i) =>
-          <td key={i}><input type='number' readOnly value={score} /></td>
+          <td key={i}><input readOnly value={score} /></td>
         )}
       </tr>
     )
