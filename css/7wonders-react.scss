@@ -33,6 +33,10 @@ input {
   width: 50px;
 }
 
-tr[category] td {
-  padding: 5px;
+td {
+  padding: 2px 5px;
+
+  &:not(:first-child) {
+    text-align: center;
+  }
 }
