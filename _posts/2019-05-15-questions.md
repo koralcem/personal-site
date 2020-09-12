@@ -6,6 +6,7 @@ tag: thoughts
 
 # Some things I’m curious about
 
+- What's the origin of the term "a flight of stairs"? Specifically, how did the term "flight" come to represent an uninterrupted series of steps? Is there a definition of how long a "flight" is? I came across a description of a hike that described the elevation gain being "equivalent to climbing 65 flights of stairs". I can tell that's not trivial, but I don't know how high it is.
 - Why is the Gregorian calendar organized the way it is? For instance, why is February the shortest month instead of, say, July? Why does February get the extra day on a leap year? Why are months that have 31 days interspersed among ones that have 30?
 - Why do some people brush their teeth _before_ they eat breakfast? Isn't eating breakfast going to deposit bits of food in their teeth, and brushing afterward can both clean them out and leave them with the fresh feeling?
 - How does a blind person who can read using Braille know where to put their hands in order to read?
