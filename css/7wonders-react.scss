@@ -1,8 +1,17 @@
 ---
 ---
 
+table {
+  border-collapse: collapse;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+tr {
+  background-color: rgb(230, 230, 230);
+}
+
 tr[category='Military'] {
-  background-color: rgb(243, 62, 62);
+  background-color: rgb(255, 88, 88);
 }
 
 tr[category='Treasury'] {
