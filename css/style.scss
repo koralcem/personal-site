@@ -57,6 +57,15 @@ li {
     margin: 0.8rem 0;
   }
 
+  .button-row {
+    display: flex;
+    align-items: center;
+
+    & > *:last-child {
+      margin-left: 15px;
+    }
+  }
+
   button {
     font-size: 1.3rem;
     border-radius: 5px;
