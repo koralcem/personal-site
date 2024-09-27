@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World</title>
+    <title>7 Wonders Score Sheet</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
@@ -13,9 +13,48 @@
     <div id="root"></div>
     <script type="text/babel">
 
+      function AddRemovePlayersRow() {
+        return (
+          <tr>
+            <td>This is the add remove player row</td>
+          </tr>
+        )
+      }
+
+      function PlayerNamesRow() {
+        return (
+          <tr>
+            <td>This is the player names row</td>
+          </tr>
+        )
+      }
+
+      function CategoryRow() {
+        return (
+          <tr>
+            <td>This is the category row</td>
+          </tr>
+        )
+      }
+
+      function TotalScoresRow() {
+        return (
+          <tr>
+            <td>This is the total scores row</td>
+          </tr>
+        )
+      }
+
       function ScoreSheet() {
         return (
-          <h1>Score sheet coming here</h1>
+          <table>
+            <tbody>
+              <AddRemovePlayersRow />
+              <PlayerNamesRow />
+              <CategoryRow />
+              <TotalScoresRow />
+            </tbody>
+          </table>
         )
       }
 
