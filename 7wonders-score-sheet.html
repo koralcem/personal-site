@@ -12,11 +12,38 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
+      let categories = [
+        'military',
+        'treasury',
+        'wonders',
+        'civilian',
+        'commerce',
+        'guild',
+        'science',
+      ]
+
+      function initialScores() {
+        return Object.fromEntries(categories.map((category) => [category, 0]))
+      }
+
+      function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1)
+      }
 
       function AddRemovePlayersRow() {
         return (
           <tr>
-            <td>This is the add remove player row</td>
+            {/* The first column is the category names, so there's no player to add or remove */}
+            <td></td>
+
+            {/* One 'Remove' button per player */}
+            <td><button>Remove</button></td>
+            <td><button>Remove</button></td>
+            <td><button>Remove</button></td>
+            <td><button>Remove</button></td>
+
+            {/* Then finally one button to add a new player at the end */}
+            <td><button>Add player</button></td>
           </tr>
         )
       }
@@ -24,15 +51,28 @@
       function PlayerNamesRow() {
         return (
           <tr>
-            <td>This is the player names row</td>
+            {/* The first column is the category names, so there's no player name to show */}
+            <td></td>
+
+            <td><input type="text" value="Alice" /></td>
+            <td><input type="text" value="Bob" /></td>
+            <td><input type="text" value="Charlie" /></td>
+            <td><input type="text" value="Diana" /></td>
           </tr>
         )
       }
 
-      function CategoryRow() {
+      function CategoryRow({ label }) {
         return (
           <tr>
-            <td>This is the category row</td>
+            {/* The first column is the category name */}
+            <td>{capitalizeFirstLetter(label)}</td>
+
+            {/* Then we have one field per player */}
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
+            <td><input type="number" /></td>
           </tr>
         )
       }
@@ -40,23 +80,50 @@
       function TotalScoresRow() {
         return (
           <tr>
-            <td>This is the total scores row</td>
+            <td>Total</td>
+
+            {/* Then we have one total per player */}
+            <td><input readOnly value="0" /></td>
+            <td><input readOnly value="0" /></td>
+            <td><input readOnly value="0" /></td>
+            <td><input readOnly value="0" /></td>
           </tr>
         )
       }
 
       function ScoreSheet() {
+        const [playerScores, dispatch] = React.useReducer(playerScoresReducer, initialPlayerScores)
+
         return (
           <table>
             <tbody>
               <AddRemovePlayersRow />
               <PlayerNamesRow />
-              <CategoryRow />
+
+              {/* We need one CategoryRow per category. Category names are unique across this utility, so they can be keys. */}
+              {categories.map(category =>
+                <CategoryRow
+                  key={category}
+                  label={category}
+                />
+              )}
+
               <TotalScoresRow />
             </tbody>
           </table>
         )
       }
+
+      function playerScoresReducer(currentState, action) {
+        return [...currentState]
+      }
+
+      const initialPlayerScores = [
+        { name: 'Alice', scores: initialScores() },
+        { name: 'Bob', scores: initialScores() },
+        { name: 'Charlie', scores: initialScores() },
+        { name: 'Diana', scores: initialScores() },
+      ]
 
       const container = document.getElementById('root');
       const root = ReactDOM.createRoot(container);
