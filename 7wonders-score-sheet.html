@@ -26,21 +26,27 @@
         return Object.fromEntries(categories.map((category) => [category, 0]))
       }
 
+      // The expected input object is one of the kind created by initialScores() above; a mapping of categories to scores
+      function sumScores(scoreObject) {
+        return Object.values(scoreObject).reduce((a, b) => a + b, 0)
+      }
+
       function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1)
       }
 
-      function AddRemovePlayersRow() {
+      function AddRemovePlayersRow({ numPlayers }) {
         return (
           <tr>
             {/* The first column is the category names, so there's no player to add or remove */}
             <td></td>
 
             {/* One 'Remove' button per player */}
-            <td><button>Remove</button></td>
-            <td><button>Remove</button></td>
-            <td><button>Remove</button></td>
-            <td><button>Remove</button></td>
+            {[...Array(numPlayers)].map((x, i) =>
+              <td key={i}>
+                <button>Remove</button>
+              </td>
+            )}
 
             {/* Then finally one button to add a new player at the end */}
             <td><button>Add player</button></td>
@@ -48,45 +54,49 @@
         )
       }
 
-      function PlayerNamesRow() {
+      function PlayerNamesRow({ names }) {
         return (
           <tr>
             {/* The first column is the category names, so there's no player name to show */}
             <td></td>
 
-            <td><input type="text" value="Alice" /></td>
-            <td><input type="text" value="Bob" /></td>
-            <td><input type="text" value="Charlie" /></td>
-            <td><input type="text" value="Diana" /></td>
+            {/* One text field per player, for their name */}
+            {names.map((name, i) =>
+              <td key={i}>
+                <input type="text" value={name} />
+              </td>
+            )}
           </tr>
         )
       }
 
-      function CategoryRow({ label }) {
+      function CategoryRow({ category, scores }) {
         return (
           <tr>
             {/* The first column is the category name */}
-            <td>{capitalizeFirstLetter(label)}</td>
+            <td>{capitalizeFirstLetter(category)}</td>
 
-            {/* Then we have one field per player */}
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
-            <td><input type="number" /></td>
+            {/* Then we have one field per player, representing that player's score in that category */}
+            {scores.map((score, i) =>
+              <td key={i}>
+                <input type="number" value={score} />
+              </td>
+            )}
           </tr>
         )
       }
 
-      function TotalScoresRow() {
+      function TotalScoresRow({ scores }) {
         return (
           <tr>
             <td>Total</td>
 
             {/* Then we have one total per player */}
-            <td><input readOnly value="0" /></td>
-            <td><input readOnly value="0" /></td>
-            <td><input readOnly value="0" /></td>
-            <td><input readOnly value="0" /></td>
+            {scores.map((score, i) =>
+              <td key={i}>
+                <input readOnly value={score} />
+              </td>
+            )}
           </tr>
         )
       }
@@ -97,18 +107,19 @@
         return (
           <table>
             <tbody>
-              <AddRemovePlayersRow />
-              <PlayerNamesRow />
+              <AddRemovePlayersRow numPlayers={playerScores.length} />
+              <PlayerNamesRow names={playerScores.map(player => player.name)}/>
 
               {/* We need one CategoryRow per category. Category names are unique across this utility, so they can be keys. */}
               {categories.map(category =>
                 <CategoryRow
                   key={category}
-                  label={category}
+                  category={category}
+                  scores={playerScores.map(player => player.scores[category])}
                 />
               )}
 
-              <TotalScoresRow />
+              <TotalScoresRow scores={playerScores.map(player => sumScores(player.scores))} />
             </tbody>
           </table>
         )
