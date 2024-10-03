@@ -35,7 +35,7 @@
         return string.charAt(0).toUpperCase() + string.slice(1)
       }
 
-      function AddRemovePlayersRow({ numPlayers, onCreatePlayer }) {
+      function AddRemovePlayersRow({ numPlayers, onCreatePlayer, onRemovePlayer }) {
         return (
           <tr>
             {/* The first column is the category names, so there's no player to add or remove */}
@@ -44,7 +44,7 @@
             {/* One 'Remove' button per player */}
             {[...Array(numPlayers)].map((x, i) =>
               <td key={i}>
-                <button>Remove</button>
+                <button onClick={() => onRemovePlayer(i)}>Remove</button>
               </td>
             )}
 
@@ -112,12 +112,20 @@
           })
         }
 
+        function handleRemovePlayer(indexToRemove) {
+          dispatch({
+            type: 'player_removed',
+            indexToRemove: indexToRemove
+          })
+        }
+
         return (
           <table>
             <tbody>
               <AddRemovePlayersRow
                 numPlayers={playerScores.length}
                 onCreatePlayer={handleCreatePlayer}
+                onRemovePlayer={handleRemovePlayer}
               />
               <PlayerNamesRow names={playerScores.map(player => player.name)}/>
 
@@ -143,6 +151,11 @@
               ...currentState,
               { name: 'New Player', scores: initialScores() }
             ]
+
+          case 'player_removed':
+            let newState = [...currentState]
+            newState.splice(action.indexToRemove, 1)
+            return newState
 
           default:
             throw Error('Unknown action in reducer: ' + action.type)
