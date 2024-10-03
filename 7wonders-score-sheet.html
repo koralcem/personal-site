@@ -76,7 +76,7 @@
         )
       }
 
-      function CategoryRow({ category, scores }) {
+      function CategoryRow({ category, scores, onScoreEnter }) {
         return (
           <tr>
             {/* The first column is the category name */}
@@ -85,7 +85,11 @@
             {/* Then we have one field per player, representing that player's score in that category */}
             {scores.map((score, i) =>
               <td key={i}>
-                <input type="number" value={score} />
+                <input
+                  type="number"
+                  value={score}
+                  onChange={(event) => onScoreEnter(i, category, Number(event.target.value))}
+                />
               </td>
             )}
           </tr>
@@ -131,6 +135,15 @@
           })
         }
 
+        function handleScoreEnter(playerIndex, category, score) {
+          dispatch({
+            type: 'score_entered',
+            playerIndex: playerIndex,
+            category: category,
+            score: score
+          })
+        }
+
         return (
           <table>
             <tbody>
@@ -150,6 +163,7 @@
                   key={category}
                   category={category}
                   scores={playerScores.map(player => player.scores[category])}
+                  onScoreEnter={handleScoreEnter}
                 />
               )}
 
@@ -173,6 +187,10 @@
 
           case 'player_name_changed':
             newState[action.indexToRename].name = action.newName
+            return newState
+
+          case 'score_entered':
+            newState[action.playerIndex].scores[action.category] = action.score
             return newState
 
           default:
