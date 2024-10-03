@@ -35,7 +35,7 @@
         return string.charAt(0).toUpperCase() + string.slice(1)
       }
 
-      function AddRemovePlayersRow({ numPlayers }) {
+      function AddRemovePlayersRow({ numPlayers, onCreatePlayer }) {
         return (
           <tr>
             {/* The first column is the category names, so there's no player to add or remove */}
@@ -49,7 +49,9 @@
             )}
 
             {/* Then finally one button to add a new player at the end */}
-            <td><button>Add player</button></td>
+            <td>
+              <button onClick={onCreatePlayer}>Add player</button>
+            </td>
           </tr>
         )
       }
@@ -104,10 +106,19 @@
       function ScoreSheet() {
         const [playerScores, dispatch] = React.useReducer(playerScoresReducer, initialPlayerScores)
 
+        function handleCreatePlayer() {
+          dispatch({
+            type: 'player_created'
+          })
+        }
+
         return (
           <table>
             <tbody>
-              <AddRemovePlayersRow numPlayers={playerScores.length} />
+              <AddRemovePlayersRow
+                numPlayers={playerScores.length}
+                onCreatePlayer={handleCreatePlayer}
+              />
               <PlayerNamesRow names={playerScores.map(player => player.name)}/>
 
               {/* We need one CategoryRow per category. Category names are unique across this utility, so they can be keys. */}
@@ -126,7 +137,16 @@
       }
 
       function playerScoresReducer(currentState, action) {
-        return [...currentState]
+        switch(action.type) {
+          case 'player_created':
+            return [
+              ...currentState,
+              { name: 'New Player', scores: initialScores() }
+            ]
+
+          default:
+            throw Error('Unknown action in reducer: ' + action.type)
+        }
       }
 
       const initialPlayerScores = [
