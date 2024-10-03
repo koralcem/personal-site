@@ -56,7 +56,7 @@
         )
       }
 
-      function PlayerNamesRow({ names }) {
+      function PlayerNamesRow({ names, onRenamePlayer }) {
         return (
           <tr>
             {/* The first column is the category names, so there's no player name to show */}
@@ -65,7 +65,11 @@
             {/* One text field per player, for their name */}
             {names.map((name, i) =>
               <td key={i}>
-                <input type="text" value={name} />
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(event) => onRenamePlayer(i, event.target.value)}
+                />
               </td>
             )}
           </tr>
@@ -119,6 +123,14 @@
           })
         }
 
+        function handleRenamePlayer(indexToRename, newName) {
+          dispatch({
+            type: 'player_name_changed',
+            indexToRename: indexToRename,
+            newName: newName
+          })
+        }
+
         return (
           <table>
             <tbody>
@@ -127,7 +139,10 @@
                 onCreatePlayer={handleCreatePlayer}
                 onRemovePlayer={handleRemovePlayer}
               />
-              <PlayerNamesRow names={playerScores.map(player => player.name)}/>
+              <PlayerNamesRow
+                names={playerScores.map(player => player.name)}
+                onRenamePlayer={handleRenamePlayer}
+              />
 
               {/* We need one CategoryRow per category. Category names are unique across this utility, so they can be keys. */}
               {categories.map(category =>
@@ -145,16 +160,19 @@
       }
 
       function playerScoresReducer(currentState, action) {
+        let newState = [...currentState]
+
         switch(action.type) {
           case 'player_created':
-            return [
-              ...currentState,
-              { name: 'New Player', scores: initialScores() }
-            ]
+            newState.push({ name: 'New Player', scores: initialScores() })
+            return newState
 
           case 'player_removed':
-            let newState = [...currentState]
             newState.splice(action.indexToRemove, 1)
+            return newState
+
+          case 'player_name_changed':
+            newState[action.indexToRename].name = action.newName
             return newState
 
           default:
