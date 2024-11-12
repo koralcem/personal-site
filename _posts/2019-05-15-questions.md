@@ -17,3 +17,5 @@ tag: thoughts
 - Why are the light switches for some bathrooms outside the room?
 - Why do establishments that have single occupancy bathrooms still designate genders to each bathroom? If there’s only ever going to be one person in there anyway, does their gender matter?
 - I took a domestic flight in Turkey where the entire flight crew was Turkish. Yet the announcements intended solely for the crew (“arm doors and cross-check”, “cabin crew please be seated for takeoff”, etc.) were still in English. Why? If the point of the announcements are to communicate clearly among the crew, and you know the entire crew has a language besides English as their mother tongue, why not use that language?
+- The "No entry" road sign in Norway is actually _curved_ (see below). Why? Is it so that the sign can be seen from a wider angle? But the odd part is that I only noticed this sign being curved. If visibility was such a priority other signs would be curved too, no?
+![A curved road sign in Norway](/media/norway-no-entry.jpg)
